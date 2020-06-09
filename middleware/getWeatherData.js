@@ -11,7 +11,6 @@ module.exports.getWeatherData = async (req, res, next) => {
   await getRealtimeForecast(req, res, next);
   await getHourlyForecast(req, res, next);
   await getDailyForecast(req, res, next);
-  res.json(res.locals);
 };
 
 const getRealtimeForecast = async (req, res, next) => {
