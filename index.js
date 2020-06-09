@@ -1,9 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
+// Business Logic //
 const { getWeatherData } = require('./middleware/getWeatherData.js');
 
-router.post('/test', (req, res, next) => {
+// Static data //
+const realtimeDevJson = require('./devJSON/realtimeBhamMay18.json');
+const nowcastDevJson = require('./devJSON/nowcastBhamMay18.json');
+const hourlyDevJson = require('./devJSON/hourlyBhamMay18.json');
+const dailyDevJson = require('./devJSON/dailyBhamMay18.json');
+
+
+router.get('/test', (req, res, next) => {
   req.body.isDevMode = false;
   req.body.latLong = '48.71,-122.45';
   getWeatherData(req, res, next);
