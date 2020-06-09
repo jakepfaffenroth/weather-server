@@ -11,10 +11,10 @@ const nowcastDevJson = require('./devJSON/nowcastBhamMay18.json');
 const hourlyDevJson = require('./devJSON/hourlyBhamMay18.json');
 const dailyDevJson = require('./devJSON/dailyBhamMay18.json');
 
-router.get('/test', (req, res, next) => {
+router.get('/test', async (req, res, next) => {
   req.body.isDevMode = false;
   req.body.latLong = '48.71,-122.45';
-  getWeatherData(req, res, next);
+  await getWeatherData(req, res, next);
 });
 
 /* GET and send static JSON */

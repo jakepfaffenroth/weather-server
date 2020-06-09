@@ -7,15 +7,19 @@ const { splitLatLong, reverseGeocode, geocode } = require('./processGeolocation.
 module.exports.getWeatherData = async (req, res, next) => {
   res.locals.geo = {};
   splitLatLong(req, res, next);
-  await checkIfDevMode(req, res, next);
-  await reverseGeocode(req, res, next);
-  Promise.all([
-    getRealtimeForecast(req, res, next),
-    getHourlyForecast(req, res, next),
-    getDailyForecast(req, res, next),
-  ]).then(() => {
-    res.json(res.locals);
-  });
+  if (req.body.isDevMode) {
+    checkIfDevMode(req, res, next);
+    return;
+  } else {
+    await reverseGeocode(req, res, next);
+    Promise.all([
+      getRealtimeForecast(req, res, next),
+      getHourlyForecast(req, res, next),
+      getDailyForecast(req, res, next),
+    ]).then(() => {
+      res.json(res.locals);
+    });
+  }
 };
 
 const getRealtimeForecast = async (req, res, next) => {

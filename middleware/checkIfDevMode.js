@@ -12,7 +12,7 @@ exports.checkIfDevMode = async (req, res, next) => {
 
   // if app is in Dev Mode, respond with static data
   if (req.body.isDevMode) {
-    console.log('...... DEV MODE - Loading static weather data');
+    console.log('...... DEV MODE - Sending static weather data');
 
     // Adds myId to each hour of hourlyForecast
     for (let index = 0; index < hourlyDevJson.length; index++) {
@@ -26,11 +26,13 @@ exports.checkIfDevMode = async (req, res, next) => {
 
     res.json({
       isStatic: true,
-      realtimeForecast: realtimeDevJson,
-      nowcastForecast: nowcastDevJson,
-      hourlyForecast: hourlyDevJson,
-      dailyForecast: dailyDevJson,
+      geo: { city: 'Bellingham', lat: '48.71', long: '-122.45', state: 'WA' },
+      realtime: realtimeDevJson,
+      nowcast: nowcastDevJson,
+      hourly: hourlyDevJson,
+      daily: dailyDevJson,
     });
+    return req.body.isDevMode
   } else {
     console.log('...... Not in Dev Mode');
     // Not dev mode, so proceed to fetching weather data
