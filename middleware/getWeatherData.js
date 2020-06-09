@@ -2,15 +2,20 @@ const axios = require('axios');
 const addDays = require('date-fns/addDays');
 
 const { checkIfDevMode } = require('./checkIfDevMode.js');
-const { processGeolocation } = require('./processGeolocation.js');
+const { splitLatLong, reverseGeocode, geocode } = require('./processGeolocation.js');
 
 module.exports.getWeatherData = async (req, res, next) => {
-  res.locals.geo = {}
+  res.locals.geo = {};
+  splitLatLong(req, res, next);
   await checkIfDevMode(req, res, next);
-  await processGeolocation(req, res, next);
-  await getRealtimeForecast(req, res, next);
-  await getHourlyForecast(req, res, next);
-  await getDailyForecast(req, res, next);
+  await reverseGeocode(req, res, next);
+  Promise.all([
+    getRealtimeForecast(req, res, next),
+    getHourlyForecast(req, res, next),
+    getDailyForecast(req, res, next),
+  ]).then(() => {
+    res.json(res.locals);
+  });
 };
 
 const getRealtimeForecast = async (req, res, next) => {

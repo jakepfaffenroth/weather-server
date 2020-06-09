@@ -3,6 +3,7 @@ const router = express.Router();
 
 // Business Logic //
 const { getWeatherData } = require('./middleware/getWeatherData.js');
+const { splitLatLong, processGeolocation, geocode } = require('./middleware/processGeolocation.js');
 
 // Static data //
 const realtimeDevJson = require('./devJSON/realtimeBhamMay18.json');
@@ -28,11 +29,17 @@ router.get('/static', function (req, res, next) {
   });
 });
 
-/* POST and fetch weather data */
+/* POST and fetch weather data on app load */
 router.post('/', async function (req, res, next) {
-  console.log('req.body: ', req.body);
+  console.log('app load req.body: ', req.body);
   await getWeatherData(req, res, next);
-  res.json(res.locals);
+});
+
+/* POST and process geo search string */
+router.post('/geosearch', async function (req, res, next) {
+  console.log('geosearch req.body: ', req.body);
+  await geocode(req, res, next);
+  getWeatherData(req, res, next)
 });
 
 module.exports = router;
