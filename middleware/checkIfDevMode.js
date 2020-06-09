@@ -1,24 +1,18 @@
-var express = require('express');
-var router = express.Router();
+const { addDays } = require('date-fns');
 
+// Static weather data for dev mode
 const realtimeDevJson = require('../devJSON/realtimeBhamMay18.json');
 const nowcastDevJson = require('../devJSON/nowcastBhamMay18.json');
 const hourlyDevJson = require('../devJSON/hourlyBhamMay18.json');
 const dailyDevJson = require('../devJSON/dailyBhamMay18.json');
 
-/* GET and send static JSON */
-router.get('/', function (req, res, next) {
-  res.json({realTime: realtimeDevJson, nowcast: nowcastDevJson, hourly: hourlyDevJson, daily:dailyDevJson});
-});
+exports.checkIfDevMode = async (req, res, next) => {
+  console.log('... checking if dev mode');
+  // let isStatic = false;
 
-/* POST and fetch weather data */
-router.post('/', function (req, res, next) {
-  res.json({realTime: realtimeDevJson, nowcast: nowcastDevJson, hourly: hourlyDevJson, daily:dailyDevJson});
-});
-
-const getForecast = (req, res, next) => {
+  // if app is in Dev Mode, respond with static data
   if (req.body.isDevMode) {
-    console.log('DEV MODE - Loading static weather data');
+    console.log('...... DEV MODE - Loading static weather data');
 
     // Adds myId to each hour of hourlyForecast
     for (let index = 0; index < hourlyDevJson.length; index++) {
@@ -31,26 +25,15 @@ const getForecast = (req, res, next) => {
     }
 
     res.json({
+      isStatic: true,
       realtimeForecast: realtimeDevJson,
       nowcastForecast: nowcastDevJson,
       hourlyForecast: hourlyDevJson,
       dailyForecast: dailyDevJson,
     });
+  } else {
+    console.log('...... Not in Dev Mode');
+    // Not dev mode, so proceed to fetching weather data
+    // next();
   }
 };
-
-const reverseGeocode = () => {};
-
-// const splitLatLong = () => { }
-
-const getWeatherData = () => {};
-
-const getRealtimeForecast = () => {};
-
-const getNowcastForecast = () => {};
-
-const getHourlyForecast = () => {};
-
-const getDailyForecast = () => {};
-
-module.exports = router;
