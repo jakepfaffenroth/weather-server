@@ -31,6 +31,7 @@ router.get('/static', function (req, res, next) {
 
 /* POST and fetch weather data on app load */
 router.post('/', async function (req, res, next) {
+  req.body.isDevMode = false;
   console.log('app load req.body: ', req.body);
   await getWeatherData(req, res, next);
 });
@@ -39,7 +40,7 @@ router.post('/', async function (req, res, next) {
 router.post('/geosearch', async function (req, res, next) {
   console.log('geosearch req.body: ', req.body);
   await geocode(req, res, next);
-  getWeatherData(req, res, next)
+  getWeatherData(req, res, next);
 });
 
 module.exports = router;

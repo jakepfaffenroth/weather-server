@@ -39,6 +39,7 @@ const getRealtimeForecast = async (req, res, next) => {
     res.locals.realtime = axiosRes.data;
   } catch (err) {
     console.log(err);
+    res.locals.isStatic = true
   }
 };
 
