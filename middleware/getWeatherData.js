@@ -78,8 +78,8 @@ const getDailyForecast = async (req, res, next) => {
     '&unit_system=us&fields=precipitation,precipitation_accumulation,temp,feels_like,wind_speed,baro_pressure,visibility,humidity,wind_direction,sunrise,sunset,moon_phase,weather_code&apikey=' +
     process.env.WEATHER_API;
 
-  const axiosRes
-  
+  let axiosRes = {};
+
   try {
     axiosRes = await axios.get(url);
     // Log response status to console
@@ -95,6 +95,6 @@ const getDailyForecast = async (req, res, next) => {
   } catch (err) {
     console.log('Daily response: ', axiosRes.status, axiosRes.statusText);
     res.locals.isStatic = true;
-    res.locals.errMsg = `Response: ${axiosRes.status} - ${axiosRes.data.message}`
+    res.locals.errMsg = `Response: ${axiosRes.status} - ${axiosRes.data.message}`;
   }
 };
